@@ -3,6 +3,8 @@ package com.tony.spring.beans;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.tony.spring.collections.NewPerson;
+
 public class Main {
 
 	
@@ -34,6 +36,10 @@ public class Main {
 		Car car2 = (Car) applicationContext.getBean("car2");
 		System.out.println(car2);
 		
+		Person person = (Person) applicationContext.getBean("person");
+		System.out.println(person);
+		
+
 		
 	}
 }

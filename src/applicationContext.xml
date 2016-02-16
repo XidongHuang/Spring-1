@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
 
 	<!-- Configure Bean -->
@@ -10,7 +13,8 @@
 
 	</bean>
 
-	<!-- By Constructor, we can configure parameters' index and type for distinct overload constructors -->
+	<!-- By Constructor, we can configure parameters' index and type for distinct 
+		overload constructors -->
 	<bean id="car" class="com.tony.spring.beans.Car">
 		<constructor-arg value="Audi" index="0"></constructor-arg>
 		<constructor-arg value="ShangHai" index="1"></constructor-arg>
@@ -19,9 +23,136 @@
 	</bean>
 	<bean id="car2" class="com.tony.spring.beans.Car">
 		<constructor-arg value="BaoMa" type="java.lang.String"></constructor-arg>
-		<constructor-arg value="ShangHai" type="java.lang.String"></constructor-arg>
-		<constructor-arg value="240" type="int"></constructor-arg>
 
+		<!-- If value includes special chars, then use "<![CDATA[...]]>" -->
+		<constructor-arg type="java.lang.String">
+			<value><![CDATA[<Shanghai||>]]></value>
+		</constructor-arg>
+		<constructor-arg type="int">
+			<value>250</value>
+
+		</constructor-arg>
+
+	</bean>
+
+	<bean id="person" class="com.tony.spring.beans.Person">
+		<property name="name" value="Tom"></property>
+		<property name="age" value="24"></property>
+		<!-- <property name="car" ref="car2"></property> Also can use ref tag -->
+		<!-- <property name="car"> <ref bean="car2"/> </property> -->
+
+
+		<!-- Inner bean -->
+	 
+		<property name="car">
+			<bean class="com.tony.spring.beans.Car">
+				<constructor-arg value="Ford"></constructor-arg>
+				<constructor-arg value="Changan"></constructor-arg>
+				<constructor-arg value="20000" type="double"></constructor-arg>
+
+			</bean>
+		</property>
+ 
+ 			
+	<property name="car.maxSpeed" value="260"></property> 			
+ 			
+
+
+	</bean>
+
+
+	<bean id="person2" class="com.tony.spring.beans.Person">
+		<constructor-arg value="Jerry"></constructor-arg>
+		<constructor-arg value="25"></constructor-arg>
+		<!-- <constructor-arg ref="car"></constructor-arg> -->
+
+		<!-- Test "null" -->
+		<!-- <constructor-arg><null/></constructor-arg> -->
+		
+		<constructor-arg ref="car"></constructor-arg>
+		<!--  -->
+		<property name="car.maxSpeed" value="350"></property>
+		
+
+	</bean>
+	
+	
+	
+	<!-- Test how to configure attributes -->
+	
+	<bean id="person3" class="com.tony.spring.collections.Person">
+		<property name="name" value="Tommy"></property>
+		<property name="age" value="27"></property>
+		<property name="cars">
+		
+		<!-- For List -->
+			<list>
+				<ref bean="car"/>
+				<ref bean="car2"/>
+				<bean class="com.tony.spring.beans.Car">
+					<constructor-arg value="Ford"></constructor-arg>
+					<constructor-arg value="Changan"></constructor-arg>
+					<constructor-arg value="20000" type="double"></constructor-arg>
+	
+				</bean>
+			</list>
+		
+		</property>
+	
+	</bean>
+	
+	<bean id="newPerson" class="com.tony.spring.collections.NewPerson">
+	
+		<property name="name" value="Rose"></property>
+		<property name="age" value="28"></property>
+		<property name="cars">
+		
+		<!-- Use "map" tag's entry sub-tag to configure "Map" type field  -->
+			<map>
+				<entry key="AA" value-ref="car"></entry>
+				<entry key="BB" value-ref="car2"></entry>
+			</map>
+		
+		</property>
+	
+	
+	</bean>
+	
+
+	<!-- Configure "Properties" attribute -->
+	<bean id="dataSource" class="com.tony.spring.collections.DataSource">
+		<property name="properties">
+			<!-- User "props" and "prop" sub-tag to configure "properties"-->
+			<props>
+				<prop key="user">root</prop>
+				<prop key="password">1234</prop>
+				<prop key="jdbcUrl">jdbc:mysql:///test</prop>
+				<prop key="driverClass">com.mysql.jdbc.Driver</prop>
+			
+			</props>
+		
+		</property>
+	
+	</bean>
+
+	<!-- Configure single collection bean for other beans to reference. Need to import "util" namespaces -->
+	<util:list id="cars">
+		<ref bean="car"/>
+		<ref bean="car2"/>
+	
+	</util:list>
+	
+	<bean id="person4" class="com.tony.spring.collections.Person">
+		<property name="name" value="Jack"></property>
+		<property name="age" value="29"></property>
+		<property name="cars" ref="cars"></property>
+	
+	</bean>
+	
+	
+	<!-- By "p" namespace to assign value to attributes. Need importing "p" namespace first. The page will be more clean-->
+	<bean id="person5" class="com.tony.spring.collections.Person" p:age="30"
+		p:name="Queen" p:cars-ref="cars">
 	</bean>
 
 </beans>

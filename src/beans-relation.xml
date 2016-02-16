@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+ <!-- 
+ 	 Abstract "bean": Set "abstract" being "true". 
+ 	 Then the abstract "bean" cannot be instance by IOC, just for being inherited.
+ 	 If a "bean"'s class is not be specified, then it is must be an abstract bean -->
+ <bean id="address" p:city="BeiJing~" p:street="WuDaoKou" abstract="true"></bean>
+ 
+ <!-- "bean" inherit: Use "parent" attribute from "bean" to specific which "bean" is inherited from -->
+ <bean id="address2"  class="com.tony.spring.autowire.Address" parent="address"></bean>
+ <bean id="address3"  class="com.tony.spring.autowire.Address"  p:street="DaZhongSi" parent="address"></bean>
+ 
+ <bean id="car" class="com.tony.spring.autowire.Car" p:brand="Audi" p:price="300000"></bean>
+ 
+ <!-- If a relative-attribute "car" in the "person" bean, then the "Person" bean depends on "car" bean -->
+<bean id="person" class="com.tony.spring.autowire.Person" p:name="Tom" p:address-ref="address2" depends-on="car"></bean>
+
+
+</beans>
