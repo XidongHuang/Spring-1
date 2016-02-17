@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- Configure bean by static factory method. notice: it is not configuring 
+		static factory instance, instead of bean instance -->
+
+
+	<!-- class: Points to static factory method's whole class name 
+		factory-method: Points to static factory method's name 
+		constructor-arg: If the method needs to pass parameters, then use <constructor-arg> to assign. -->
+	<bean id="car1" class="com.tony.spring.factory.StaticCarFactory"
+		factory-method="getCar">
+		<constructor-arg value="audi"></constructor-arg>
+	</bean>
+
+
+	<!-- Configure factory's instance -->
+	<bean id="carFactory" class="com.tony.spring.factory.InstanceCarFactory"></bean>
+
+	<!--
+		factory-bean: points to instance factory method's whole class name
+	
+	
+	-->
+	<bean id="car2" factory-method="getCar" factory-bean="carFactory">
+		<constructor-arg value="ford"></constructor-arg>
+	</bean>
+	
+</beans>

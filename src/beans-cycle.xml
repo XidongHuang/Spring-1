@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="car" class="com.tony.spring.cycle.Car" init-method="init"
+		destroy-method="destroy"></bean>
+
+	<!-- 实现 BeanPostProcessor interface, and afford tow methods: Object postProcessBeforeInitialization(Object 
+		bean, String beanName): it is invoked before "init-method" Object postProcessAfterInitialization(Object 
+		bean, String beanName): it is invoked after "init-method" 1. bean: "bean" 
+		itself 2. beanName: the bean's name(id) in IOC container 3. return: the actual 
+		"bean" instance that return to process, notice: the real "bean" can be modified 
+		in last two method, or return a new one -->
+		
+	<!-- Configure bean post processor: Do not need configure id, IOC container will recognition BeanPostProcessor-->
+	<bean class="com.tony.spring.cycle.MyBeanPostProcesser"></bean>
+
+</beans>
